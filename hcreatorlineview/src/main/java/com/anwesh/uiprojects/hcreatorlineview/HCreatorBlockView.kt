@@ -223,4 +223,13 @@ class HCreatorBlockView(ctx : Context) : View(ctx) {
         }
     }
 
+    companion object {
+
+        fun create(activity : Activity) : HCreatorBlockView {
+            val view : HCreatorBlockView = HCreatorBlockView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
+
 }

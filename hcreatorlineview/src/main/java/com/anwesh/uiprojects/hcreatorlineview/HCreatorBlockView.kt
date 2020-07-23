@@ -29,18 +29,18 @@ fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 fun Canvas.drawHCreatorBlock(i : Int, scale : Float, w : Float, h : Float, paint : Paint) {
     val size : Float = Math.min(w, h) / sizeFactor
     val sf : Float = scale.sinify()
-    val sfi : Float = sf.divideScale(i, 2)
+    //val sfi : Float = sf.divideScale(i, 2)
     save()
     scale(1f - 2 * i, 1f)
     for (j in 0..1) {
-        val sf1 : Float = sfi.divideScale(0, 3)
-        val sf2 : Float = sfi.divideScale(1, 3)
-        val sf3 : Float = sfi.divideScale(2, 3)
+        val sf1 : Float = sf.divideScale(0, 3)
+        val sf2 : Float = sf.divideScale(1, 3)
+        val sf3 : Float = sf.divideScale(2, 3)
         val uSize : Float = (size * sf1)
         val x : Float = (w / 2 - size) * sf2
         val y : Float = (h / 2 - size) * sf3
         save()
-        scale(1f, 1f - 2 * i)
+        scale(1f, 1f - 2 * j)
         drawLine(0f, 0f, x, 0f, paint)
         save()
         translate(x, 0f)

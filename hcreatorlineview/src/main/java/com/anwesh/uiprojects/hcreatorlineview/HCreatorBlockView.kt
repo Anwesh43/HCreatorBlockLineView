@@ -17,6 +17,7 @@ val colors : Array<String> = arrayOf("#F44336", "#4CAF50", "#3F51B5", "#FF5722",
 val parts : Int = 3
 val scGap : Float = 0.02f / parts
 val sizeFactor : Float = 6f
+val strokeFactor : Int = 90
 val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
 
@@ -25,3 +26,49 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
+fun Canvas.drawHCreatorBlock(i : Int, scale : Float, w : Float, h : Float, paint : Paint) {
+    val size : Float = Math.min(w, h) / sizeFactor
+    val sf : Float = scale.sinify()
+    val sfi : Float = sf.divideScale(i, 2)
+    save()
+    scale(1f - 2 * i, 1f)
+    for (j in 0..1) {
+        val sf1 : Float = sfi.divideScale(0, 3)
+        val sf2 : Float = sfi.divideScale(1, 3)
+        val sf3 : Float = sfi.divideScale(2, 3)
+        val uSize : Float = (size * sf1)
+        val x : Float = (w / 2 - size) * sf2
+        val y : Float = (h / 2 - size) * sf3
+        save()
+        scale(1f, 1f - 2 * i)
+        drawLine(0f, 0f, x, 0f, paint)
+        save()
+        translate(x, 0f)
+        drawLine(0f, 0f, 0f, y, paint)
+        save()
+        translate(0f, y)
+        drawRect(RectF(-uSize / 2, -uSize / 2, uSize / 2, uSize / 2), paint)
+        restore()
+        restore()
+        restore()
+    }
+    restore()
+}
+
+fun Canvas.drawHCreatorBlocks(scale : Float, w : Float, h : Float, paint : Paint) {
+    save()
+    translate(w / 2, h / 2)
+    for (j in 0..1) {
+        drawHCreatorBlock(j, scale, w, h, paint)
+    }
+    restore()
+}
+
+fun Canvas.drawHCBNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = Color.parseColor(colors[i])
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    drawHCreatorBlocks(scale, w, h, paint)
+}

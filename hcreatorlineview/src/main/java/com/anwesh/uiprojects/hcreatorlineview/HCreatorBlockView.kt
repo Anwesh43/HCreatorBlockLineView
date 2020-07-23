@@ -200,4 +200,27 @@ class HCreatorBlockView(ctx : Context) : View(ctx) {
         }
     }
 
+
+    data class Renderer(var view : HCreatorBlockView) {
+
+        private val animator : Animator = Animator(view)
+        private val hcb : HCreatorBlock = HCreatorBlock(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            hcb.draw(canvas, paint)
+            animator.animate {
+                hcb.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            hcb.startUpdating {
+                animator.start()
+            }
+        }
+    }
+
 }
